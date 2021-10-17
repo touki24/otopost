@@ -6,7 +6,7 @@ import com.touki.otopost.core.post.source.ApiFetchPosts
 import com.touki.otopost.framework.core.post.mapper.PostMapper
 import com.touki.otopost.framework.core.post.model.FetchPostsResponse
 
-class ApiFetchPostsImpl: ApiFetchPosts {
+internal class ApiFetchPostsImpl: ApiFetchPosts {
     private val mapper by lazy {
         PostMapper()
     }
@@ -19,7 +19,7 @@ class ApiFetchPostsImpl: ApiFetchPosts {
     }
 }
 
-val dummyFetchPostsResponse = FetchPostsResponse().apply {
+internal val dummyFetchPostsResponse = FetchPostsResponse().apply {
     add(FetchPostsResponse.Item(
         id = 1,
         title = "Hello world",

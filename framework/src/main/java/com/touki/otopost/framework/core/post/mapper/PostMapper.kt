@@ -7,7 +7,7 @@ import com.touki.otopost.common.mapper.ResponseToModel
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.framework.core.post.model.FetchPostsResponse
 
-class PostMapper: ResponseToModel<FetchPostsResponse.Item, Post> {
+internal class PostMapper: ResponseToModel<FetchPostsResponse.Item, Post> {
 
     override fun responseToModel(response: FetchPostsResponse.Item): Post {
         return Post(
