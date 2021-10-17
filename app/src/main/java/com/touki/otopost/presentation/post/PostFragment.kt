@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostBinding
 import com.touki.otopost.presentation.post.adapter.PostRecyclerAdapter
 import com.touki.otopost.util.BounceEdgeEffectFactory
+import com.touki.otopost.util.extension.navigateSafe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PostFragment : Fragment() {
@@ -35,6 +38,8 @@ class PostFragment : Fragment() {
         object : PostRecyclerAdapter.ItemClickListener {
             override fun onClick(postId: Int) {
                 Log.d(TAG, "onClick: $postId")
+                val action = PostFragmentDirections.actionPostFragmentToPostDetailFragment(postId)
+                findNavController().navigate(action)
             }
         }
     }
