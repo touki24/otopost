@@ -33,8 +33,8 @@ class PostFragment : Fragment() {
 
     private val recyclerItemClickListener by lazy {
         object : PostRecyclerAdapter.ItemClickListener {
-            override fun onClick(post: Post) {
-                Log.d(TAG, "onClick: $post")
+            override fun onClick(postId: Int) {
+                Log.d(TAG, "onClick: $postId")
             }
         }
     }

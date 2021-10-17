@@ -9,7 +9,7 @@ import com.touki.otopost.databinding.ItemPostBinding
 class PostRecyclerAdapter: RecyclerView.Adapter<PostRecyclerAdapter.Holder>() {
 
     interface ItemClickListener {
-        fun onClick(post: Post)
+        fun onClick(postId: Int)
     }
 
     private var posts: List<Post> = listOf()
@@ -41,7 +41,7 @@ class PostRecyclerAdapter: RecyclerView.Adapter<PostRecyclerAdapter.Holder>() {
             binding.title.text = post.title
             binding.content.text = post.content
             binding.container.setOnClickListener {
-                listener?.onClick(post)
+                listener?.onClick(post.id)
             }
         }
     }
