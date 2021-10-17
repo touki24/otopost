@@ -18,6 +18,7 @@ class App: Application() {
             androidLogger(Level.NONE)
             androidContext(this@App)
             modules(listOf(
+                appPostModules,
                 frameworkCorePostModules,
             ))
         }
