@@ -5,7 +5,7 @@ import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.core.post.repo.PostRepository
 import com.touki.otopost.core.post.source.ApiFetchPosts
 
-class PostRepositoryImpl(private val apiFetchPosts: ApiFetchPosts): PostRepository {
+internal class PostRepositoryImpl(private val apiFetchPosts: ApiFetchPosts): PostRepository {
     override suspend fun fetchPosts(): CommonResult<List<Post>> {
         val posts = apiFetchPosts().fold(
             success = { postList ->
