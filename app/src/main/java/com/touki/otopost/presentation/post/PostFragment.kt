@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.touki.otopost.core.post.model.Post
@@ -49,6 +50,9 @@ class PostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupPostsRecycler()
         setupPostsObserver()
+    }
+
+    private fun fetchPosts() {
         viewModel.fetchPosts()
     }
 
@@ -57,6 +61,10 @@ class PostFragment : Fragment() {
         binding.recyclerPost.adapter = adapter
         binding.recyclerPost.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerPost.edgeEffectFactory = bounceEdgeEffectFactory
+        binding.swipeRefresh.setOnRefreshListener {
+            binding.swipeRefresh.isRefreshing = false
+            fetchPosts()
+        }
     }
 
     private fun setupPostsObserver() {
