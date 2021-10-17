@@ -1,0 +1,104 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
+android {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('app.properties').newDataInputStream())
+
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.touki.otopost"
+        minSdkVersion 22
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    productFlavors {
+        development {
+            dimension "default"
+            applicationIdSuffix ".dev"
+            buildConfigField "String", "BASE_URL", "\"${properties.getProperty('field.dev.base.url')}\""
+            resValue "string", "app_name", appNameDev
+        }
+        staging {
+            dimension "default"
+            applicationIdSuffix ".stg"
+            buildConfigField "String", "BASE_URL", "\"${properties.getProperty('field.stg.base.url')}\""
+            resValue "string", "app_name", appNameStg
+        }
+        production {
+            dimension "default"
+            buildConfigField "String", "BASE_URL", "\"${properties.getProperty('field.pro.base.url')}\""
+            resValue "string", "app_name", appName
+        }
+    }
+    flavorDimensions "default"
+
+    signingConfigs {
+        release {
+            if (properties.getProperty('app.release.store.file') != null) {
+                storeFile file(properties.getProperty('app.release.store.file'))
+                keyAlias properties.getProperty('app.release.key.alias')
+                storePassword properties.getProperty('app.release.store.password')
+                keyPassword properties.getProperty('app.release.key.password')
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "$appName-${variant.name}-v${defaultConfig.versionName}.apk"
+                }
+            }
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "$appName-${variant.name}-v${defaultConfig.versionName}.apk"
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures{
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+
+    // ViewBinding Delegate for leak solving and reduce boilerplate
+    final viewbinding_delegate_version = '1.4.7'
+    implementation "com.github.kirich1409:viewbindingpropertydelegate:$viewbinding_delegate_version"
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
