@@ -21,9 +21,8 @@ internal class ApiFetchPostsImpl(private val httpClient: HttpClient): ApiFetchPo
 
     override suspend fun invoke(): CommonResult<List<Post>> {
         val url = "${BuildConfig.BASE_URL}/posts"
-        val result = httpClient.get(url).log("API-POST").dispatch(timeout = 25000, timeoutRead = 25000).fold(
+        val result = httpClient.get(url).log("API-POST").dispatch(timeout = 10000, timeoutRead = 10000).fold(
             success = {
-                Log.d("API-POST-IMPL", "response: $it")
                 deserializer.deserialize(it)
             },
             failure = { error ->
