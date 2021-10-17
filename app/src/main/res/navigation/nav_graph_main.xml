@@ -17,9 +17,13 @@
     <fragment
         android:id="@+id/postDetailFragment"
         android:name="com.touki.otopost.presentation.post.detail.PostDetailFragment"
-        android:label="PostDetailFragment" >
+        android:label="fragment_post_detail">
         <action
             android:id="@+id/action_postDetailFragment_to_postFragment"
             app:destination="@id/postFragment" />
+        <argument
+            android:name="postId"
+            app:argType="integer"
+            android:defaultValue="0"/>
     </fragment>
 </navigation>
