@@ -12,6 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostBinding
 import com.touki.otopost.presentation.post.adapter.PostRecyclerAdapter
+import com.touki.otopost.util.BounceEdgeEffectFactory
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PostFragment : Fragment() {
@@ -23,6 +24,10 @@ class PostFragment : Fragment() {
     private val viewModel: PostViewModel by sharedViewModel()
     private val adapter by lazy {
         PostRecyclerAdapter()
+    }
+
+    private val bounceEdgeEffectFactory by lazy {
+        BounceEdgeEffectFactory()
     }
 
     private val recyclerItemClickListener by lazy {
@@ -51,6 +56,7 @@ class PostFragment : Fragment() {
         adapter.setItemClickListener(recyclerItemClickListener)
         binding.recyclerPost.adapter = adapter
         binding.recyclerPost.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerPost.edgeEffectFactory = bounceEdgeEffectFactory
     }
 
     private fun setupPostsObserver() {
