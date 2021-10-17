@@ -14,9 +14,9 @@ internal class PostMapper: ResponseToModel<FetchPostsResponse.Item, Post> {
             id = response.id.orZero(),
             title = response.title.orEmpty(),
             content = response.content.orEmpty(),
-            published_at = response.publishedAt.toDate(DATE_TIME_STANDARD),
-            created_at = response.createdAt.toDate(DATE_TIME_STANDARD),
-            updated_at = response.updatedAt.toDate(DATE_TIME_STANDARD)
+            publishedAt = response.publishedAt.toDate(DATE_TIME_STANDARD),
+            createdAt = response.createdAt.toDate(DATE_TIME_STANDARD),
+            updatedAt = response.updatedAt.toDate(DATE_TIME_STANDARD)
         )
     }
 }
