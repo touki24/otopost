@@ -29,4 +29,5 @@ ext {
     appName = 'Otopost'
     appNameDev = 'Dev Otopost'
     appNameStg = 'Stg Otopost'
+    koin_version = '3.1.2'
 }
