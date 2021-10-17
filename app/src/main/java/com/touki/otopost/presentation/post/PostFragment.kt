@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.touki.otopost.core.post.model.Post
@@ -50,9 +49,12 @@ class PostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupPostsRecycler()
         setupPostsObserver()
+        setupErrorObserver()
+        fetchPosts()
     }
 
     private fun fetchPosts() {
+        binding.progressCircular.visibility = View.VISIBLE
         viewModel.fetchPosts()
     }
 
@@ -69,10 +71,18 @@ class PostFragment : Fragment() {
 
     private fun setupPostsObserver() {
         viewModel.posts.observe(viewLifecycleOwner, { posts ->
+            binding.progressCircular.visibility = View.GONE
             adapter.setPosts(posts = posts)
             posts.forEach { post ->
                 Log.d(TAG, post.toString())
             }
+        })
+    }
+
+    private fun setupErrorObserver() {
+        viewModel.error.observe(viewLifecycleOwner, {
+            binding.progressCircular.visibility = View.GONE
+            Log.d(TAG, "setupErrorObserver: $it")
         })
     }
 }
