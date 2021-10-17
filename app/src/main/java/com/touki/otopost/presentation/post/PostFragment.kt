@@ -39,7 +39,7 @@ class PostFragment : Fragment() {
             override fun onClick(postId: Int) {
                 Log.d(TAG, "onClick: $postId")
                 val action = PostFragmentDirections.actionPostFragmentToPostDetailFragment(postId)
-                findNavController().navigate(action)
+                findNavController().navigateSafe(R.id.postFragment, action)
             }
         }
     }
