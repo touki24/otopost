@@ -9,5 +9,17 @@
         android:id="@+id/postFragment"
         android:name="com.touki.otopost.presentation.post.PostFragment"
         android:label="fragment_post"
-        tools:layout="@layout/fragment_post" />
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_postFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.touki.otopost.presentation.post.detail.PostDetailFragment"
+        android:label="PostDetailFragment" >
+        <action
+            android:id="@+id/action_postDetailFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
 </navigation>
