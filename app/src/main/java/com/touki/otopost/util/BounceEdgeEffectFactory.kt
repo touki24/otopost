@@ -7,7 +7,7 @@ import androidx.dynamicanimation.animation.SpringForce
 import androidx.recyclerview.widget.RecyclerView
 
 /** The magnitude of translation distance while the list is over-scrolled. */
-private const val OVERSCROLL_TRANSLATION_MAGNITUDE = 0.2f
+private const val OVER_SCROLL_TRANSLATION_MAGNITUDE = 0.3f
 
 /** The magnitude of translation distance when the list reaches the edge on fling. */
 private const val FLING_TRANSLATION_MAGNITUDE = 0.5f
@@ -36,7 +36,7 @@ class BounceEdgeEffectFactory : RecyclerView.EdgeEffectFactory() {
 
                 // Translate the recyclerView with the distance
                 val sign = if (direction == DIRECTION_BOTTOM) -1 else 1
-                val translationYDelta = sign * recyclerView.width * deltaDistance * OVERSCROLL_TRANSLATION_MAGNITUDE
+                val translationYDelta = sign * recyclerView.width * deltaDistance * OVER_SCROLL_TRANSLATION_MAGNITUDE
                 recyclerView.translationY += translationYDelta
 
                 translationAnim?.cancel()

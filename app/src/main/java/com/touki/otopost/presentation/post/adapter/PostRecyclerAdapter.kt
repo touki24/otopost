@@ -2,6 +2,7 @@ package com.touki.otopost.presentation.post.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.ItemPostBinding
@@ -9,15 +10,18 @@ import com.touki.otopost.databinding.ItemPostBinding
 class PostRecyclerAdapter: RecyclerView.Adapter<PostRecyclerAdapter.Holder>() {
 
     interface ItemClickListener {
-        fun onClick(post: Post)
+        fun onClick(postId: Int)
     }
 
-    private var posts: List<Post> = listOf()
+    private var posts: MutableList<Post> = mutableListOf()
     private var listener: ItemClickListener? = null
 
     fun setPosts(posts: List<Post>) {
-        this.posts = posts
-        notifyDataSetChanged()
+        val diffCallback = PostDiffCallback(this.posts, posts)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.posts.clear()
+        this.posts.addAll(posts)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun setItemClickListener(listener: ItemClickListener) {
@@ -41,7 +45,7 @@ class PostRecyclerAdapter: RecyclerView.Adapter<PostRecyclerAdapter.Holder>() {
             binding.title.text = post.title
             binding.content.text = post.content
             binding.container.setOnClickListener {
-                listener?.onClick(post)
+                listener?.onClick(post.id)
             }
         }
     }

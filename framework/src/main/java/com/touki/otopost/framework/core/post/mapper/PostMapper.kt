@@ -6,11 +6,12 @@ import com.touki.otopost.common.extension.orZero
 import com.touki.otopost.common.extension.toDate
 import com.touki.otopost.common.mapper.ResponseToModel
 import com.touki.otopost.core.post.model.Post
+import com.touki.otopost.framework.core.post.model.FetchPostResponse
 import com.touki.otopost.framework.core.post.model.FetchPostsResponse
 
-internal class PostMapper: ResponseToModel<FetchPostsResponse.Item, Post> {
+internal class PostMapper: ResponseToModel<FetchPostResponse, Post> {
 
-    override fun responseToModel(response: FetchPostsResponse.Item): Post {
+    override fun responseToModel(response: FetchPostResponse): Post {
         return Post(
             id = response.id.orZero(),
             title = response.title.orEmpty(),

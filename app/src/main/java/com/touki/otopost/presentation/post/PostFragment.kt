@@ -5,15 +5,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
-import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostBinding
 import com.touki.otopost.presentation.post.adapter.PostRecyclerAdapter
 import com.touki.otopost.util.BounceEdgeEffectFactory
+import com.touki.otopost.util.extension.navigateSafe
+import com.touki.otopost.util.extension.setSupportActionBar
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PostFragment : Fragment() {
@@ -33,8 +38,10 @@ class PostFragment : Fragment() {
 
     private val recyclerItemClickListener by lazy {
         object : PostRecyclerAdapter.ItemClickListener {
-            override fun onClick(post: Post) {
-                Log.d(TAG, "onClick: $post")
+            override fun onClick(postId: Int) {
+                Log.d(TAG, "onClick: $postId")
+                val action = PostFragmentDirections.actionPostFragmentToPostDetailFragment(postId)
+                findNavController().navigateSafe(R.id.postFragment, action)
             }
         }
     }
@@ -48,13 +55,25 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSupportActionBar(binding.toolbar, false)
         setupPostsRecycler()
         setupPostsObserver()
         setupErrorObserver()
+        binding.progressCircular.visibility = View.GONE
         fetchPosts()
     }
 
+
+    override fun onPause() {
+        super.onPause()
+        binding.progressCircular.visibility = View.GONE
+    }
+
     private fun fetchPosts() {
+        if (binding.progressCircular.isVisible) {
+            return
+        }
+
         binding.progressCircular.visibility = View.VISIBLE
         viewModel.fetchPosts()
     }
@@ -62,21 +81,23 @@ class PostFragment : Fragment() {
     private fun setupPostsRecycler() {
         adapter.setItemClickListener(recyclerItemClickListener)
         binding.recyclerPost.adapter = adapter
-        binding.recyclerPost.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.recyclerPost.edgeEffectFactory = bounceEdgeEffectFactory
-        binding.swipeRefresh.setOnRefreshListener {
-            binding.swipeRefresh.isRefreshing = false
-            fetchPosts()
+        binding.recyclerPost.layoutManager = object: LinearLayoutManager(requireContext()) {
+            override fun scrollVerticallyBy(dy: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
+                val scrollRange = super.scrollVerticallyBy(dy, recycler, state)
+                val overScroll = dy - scrollRange
+                if (overScroll < -60) { // minus value means its top over scroll
+                    fetchPosts()
+                }
+                return scrollRange
+            }
         }
+        binding.recyclerPost.edgeEffectFactory = bounceEdgeEffectFactory
     }
 
     private fun setupPostsObserver() {
         viewModel.posts.observe(viewLifecycleOwner, { posts ->
             binding.progressCircular.visibility = View.GONE
             adapter.setPosts(posts = posts)
-            posts.forEach { post ->
-                Log.d(TAG, post.toString())
-            }
         })
     }
 
