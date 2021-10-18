@@ -5,4 +5,6 @@ import com.touki.otopost.core.post.model.Post
 
 interface PostRepository {
     suspend fun fetchPosts(): CommonResult<List<Post>>
+
+    suspend fun fetchPost(postId: Int): CommonResult<Post>
 }
