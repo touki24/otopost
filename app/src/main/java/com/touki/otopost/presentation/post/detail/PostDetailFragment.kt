@@ -9,11 +9,15 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.touki.otopost.common.extension.showMessage
+import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostDetailBinding
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PostDetailFragment : Fragment() {
 
     private val binding: FragmentPostDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private val viewModel: PostDetailViewModel by sharedViewModel()
     private val args: PostDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -26,6 +30,40 @@ class PostDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("TAG", "onViewCreated: ${args.postId}")
+        initView()
+        setupPostObserver()
+        setupErrorObserver()
+        fetchPost()
     }
 
+    private fun initView() {
+        Log.d("TAG", "initView: ")
+        binding.title.text = ""
+        binding.content.text = ""
+    }
+
+    private fun fetchPost() {
+        binding.progressCircular.visibility = View.VISIBLE
+        viewModel.fetchPost(args.postId)
+    }
+
+    private fun setupPostObserver() {
+        viewModel.post.observe(viewLifecycleOwner, { post ->
+            binding.progressCircular.visibility = View.GONE
+            populatePost(post = post)
+        })
+    }
+
+    private fun setupErrorObserver() {
+        viewModel.error.observe(viewLifecycleOwner, {
+            binding.progressCircular.visibility = View.GONE
+            Log.d("", "setupErrorObserver: $it")
+            showMessage(it)
+        })
+    }
+
+    private fun populatePost(post: Post) {
+        binding.title.text = post.title
+        binding.content.text = post.content
+    }
 }

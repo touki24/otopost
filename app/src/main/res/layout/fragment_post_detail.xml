@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:paddingHorizontal="18dp"
     android:paddingVertical="18dp"
-    tools:context=".PostDetailFragment">
+    tools:context=".presentation.post.detail.PostDetailFragment">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title"
@@ -34,7 +34,6 @@
         />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
-        style="@style/Widget.MaterialComponents.CircularProgressIndicator"
         android:id="@+id/progressCircular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
