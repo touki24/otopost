@@ -8,9 +8,6 @@ fun Fragment.setSupportActionBar(toolbar: Toolbar, withBackButton: Boolean = tru
     (activity as AppCompatActivity).apply {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(withBackButton)
-        toolbar.setNavigationOnClickListener {
-            this.onBackPressed()
-        }
     }
     return toolbar
 }

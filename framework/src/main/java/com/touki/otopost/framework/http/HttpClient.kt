@@ -23,6 +23,15 @@ interface HttpClient {
     fun get(url : String): HttpClient
 
     /**
+     * Composing a Request instance with DELETE Method
+     *
+     * @param url [String] the URL API which handles the designated process
+     *
+     * @return [HttpClient] HTTP Client builder for next chain
+     */
+    fun delete(url : String): HttpClient
+
+    /**
      * Composing a Request instance with Download
      *
      * @param url [String] the URL API which handles the designated process

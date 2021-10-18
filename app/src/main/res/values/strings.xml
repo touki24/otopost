@@ -1,6 +1,8 @@
 <resources>
-
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_post">Post</string>
+    <string name="warning_deleting_post">Apakah anda yakin ingin meghapus post ini\nPost yang sudah dihapus tidak dapat dikembalikan lagi.</string>
+    <string name="label_confirmation">Konfirmasi</string>
+    <string name="label_decline">Batal</string>
+    <string name="label_accept">Ya</string>
 </resources>

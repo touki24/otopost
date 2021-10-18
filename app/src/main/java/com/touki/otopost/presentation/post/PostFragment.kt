@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
+import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostBinding
 import com.touki.otopost.presentation.post.adapter.PostRecyclerAdapter
 import com.touki.otopost.util.BounceEdgeEffectFactory
@@ -57,16 +59,23 @@ class PostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setSupportActionBar(binding.toolbar, false)
         setupPostsRecycler()
-        setupPostsObserver()
-        setupErrorObserver()
         binding.progressCircular.visibility = View.GONE
         fetchPosts()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.posts.observe(viewLifecycleOwner, postsObserver)
+        viewModel.error.observe(viewLifecycleOwner, errorObserver)
     }
 
 
     override fun onPause() {
         super.onPause()
         binding.progressCircular.visibility = View.GONE
+        viewModel.posts.removeObserver(postsObserver)
+        viewModel.error.removeObserver(errorObserver)
+        activity?.viewModelStore?.clear()
     }
 
     private fun fetchPosts() {
@@ -85,7 +94,7 @@ class PostFragment : Fragment() {
             override fun scrollVerticallyBy(dy: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
                 val scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 val overScroll = dy - scrollRange
-                if (overScroll < -60) { // minus value means its top over scroll
+                if (overScroll < -55) { // minus value means its top over scroll
                     fetchPosts()
                 }
                 return scrollRange
@@ -94,18 +103,14 @@ class PostFragment : Fragment() {
         binding.recyclerPost.edgeEffectFactory = bounceEdgeEffectFactory
     }
 
-    private fun setupPostsObserver() {
-        viewModel.posts.observe(viewLifecycleOwner, { posts ->
-            binding.progressCircular.visibility = View.GONE
-            adapter.setPosts(posts = posts)
-        })
+    private val postsObserver = Observer<List<Post>> { posts ->
+        binding.progressCircular.visibility = View.GONE
+        adapter.setPosts(posts = posts)
     }
 
-    private fun setupErrorObserver() {
-        viewModel.error.observe(viewLifecycleOwner, {
-            binding.progressCircular.visibility = View.GONE
-            Log.d(TAG, "setupErrorObserver: $it")
-            showMessage(it)
-        })
+    private val errorObserver = Observer<String> { message ->
+        binding.progressCircular.visibility = View.GONE
+        Log.d(TAG, "setupErrorObserver: $message")
+        showMessage(message)
     }
 }

@@ -10,10 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PostDetailViewModel(private val postRepository: PostRepository): ViewModel() {
-    private val _post: MutableLiveData<Post> = MutableLiveData()
+    private var _post: MutableLiveData<Post> = MutableLiveData()
     val post: LiveData<Post> = _post
 
-    private val _error: MutableLiveData<String> = MutableLiveData()
+    private var _deletedPost: MutableLiveData<Post> = MutableLiveData()
+    val deletedPost: LiveData<Post> = _deletedPost
+
+    private var _error: MutableLiveData<String> = MutableLiveData()
     val error: LiveData<String> = _error
 
     fun fetchPost(postId: Int) {
@@ -21,6 +24,19 @@ class PostDetailViewModel(private val postRepository: PostRepository): ViewModel
             postRepository.fetchPost(postId).fold(
                 success = { posts ->
                     _post.postValue(posts)
+                },
+                failure = { error ->
+                    _error.postValue(error.message)
+                }
+            )
+        }
+    }
+
+    fun deletePost(postId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            postRepository.deletePost(postId).fold(
+                success = { posts ->
+                    _deletedPost.postValue(posts)
                 },
                 failure = { error ->
                     _error.postValue(error.message)
