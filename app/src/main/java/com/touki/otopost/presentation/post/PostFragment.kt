@@ -59,22 +59,20 @@ class PostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setSupportActionBar(binding.toolbar, false)
         setupPostsRecycler()
+        setPostsObserver()
+        setErrorObserver()
+
         binding.progressCircular.visibility = View.GONE
         fetchPosts()
-    }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.posts.observe(viewLifecycleOwner, postsObserver)
-        viewModel.error.observe(viewLifecycleOwner, errorObserver)
+        binding.fabCreatePost.setOnClickListener {
+            val action = PostFragmentDirections.actionPostFragmentToPostCreateFragment()
+            findNavController().navigateSafe(R.id.postFragment, action)
+        }
     }
-
 
     override fun onPause() {
         super.onPause()
-        binding.progressCircular.visibility = View.GONE
-        viewModel.posts.removeObserver(postsObserver)
-        viewModel.error.removeObserver(errorObserver)
         activity?.viewModelStore?.clear()
     }
 
@@ -103,14 +101,18 @@ class PostFragment : Fragment() {
         binding.recyclerPost.edgeEffectFactory = bounceEdgeEffectFactory
     }
 
-    private val postsObserver = Observer<List<Post>> { posts ->
-        binding.progressCircular.visibility = View.GONE
-        adapter.setPosts(posts = posts)
+    private fun setPostsObserver() {
+        viewModel.posts.observe(viewLifecycleOwner, { posts ->
+            binding.progressCircular.visibility = View.GONE
+            adapter.setPosts(posts = posts)
+        })
     }
 
-    private val errorObserver = Observer<String> { message ->
-        binding.progressCircular.visibility = View.GONE
-        Log.d(TAG, "setupErrorObserver: $message")
-        showMessage(message)
+    private fun setErrorObserver() {
+        viewModel.error.observe(viewLifecycleOwner, { message ->
+            binding.progressCircular.visibility = View.GONE
+            Log.d(TAG, "setupErrorObserver: $message")
+            showMessage(message)
+        })
     }
 }

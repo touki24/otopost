@@ -5,4 +5,19 @@
     <string name="label_confirmation">Konfirmasi</string>
     <string name="label_decline">Batal</string>
     <string name="label_accept">Ya</string>
+    <string name="digits_alphanumeric_and_symbols">ASDFGHJKLQWERTYUIOPZXCVBNMasdfghjkllqwertyuiopzxcvbnm1234567890,.!@#$%^*()_+=- ?&amp;&quot;</string>
+    <string name="digits_alphanumeric_and_symbols_and_enter">ASDFGHJKLQWERTYUIOPZXCVBNMasdfghjkllqwertyuiopzxcvbnm1234567890,.!@#$%^*()_+=- ?&amp;&quot;\n</string>
+    <string name="label_title">Judul</string>
+    <string name="label_content">Konten</string>
+    <string name="label_create_post">Buat Post</string>
+    <string name="warning_back_confirmation">Anda memiliki post yang belum tersimpan, apakah anda yakin untuk kembali?\nPost yang belum tersimpan tidak dapat ditampilkan kembali.</string>
+    <string name="error_content_too_short">Konten terlalu pendek, minimal %1d karakter</string>
+    <string name="error_title_too_short">Judul terlalu pendek, minimal %1d karakter</string>
+    <string name="error_title_empty">Judul tidak boleh kosong</string>
+    <string name="error_content_empty">Konten tidak boleh kosong</string>
+    <string name="warning_clear_form">Apakah anda yakin ingin membersihkan form?</string>
+    <string name="label_information">Informasi</string>
+    <string name="info_create_post_success">Woohoo, post berhasil dibuat!!\nApakah anda ingin membuat post lagi?</string>
+    <string name="label_back_to_posts">Kembali ke Posts</string>
+    <string name="label_create_post_again">Buat post lagi</string>
 </resources>

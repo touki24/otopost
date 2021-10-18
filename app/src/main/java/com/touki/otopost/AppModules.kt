@@ -2,11 +2,18 @@ package com.touki.otopost
 
 import com.touki.otopost.core.post.repo.PostRepository
 import com.touki.otopost.presentation.post.PostViewModel
+import com.touki.otopost.presentation.post.create.PostCreateViewModel
 import com.touki.otopost.presentation.post.detail.PostDetailViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appPostModules = module {
+    viewModel<PostCreateViewModel> {
+        PostCreateViewModel(
+            postRepository = get<PostRepository>()
+        )
+    }
+
     viewModel<PostViewModel> {
         PostViewModel(
             postRepository = get<PostRepository>()
