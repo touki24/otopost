@@ -5,14 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
-import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostBinding
 import com.touki.otopost.presentation.post.adapter.PostRecyclerAdapter
 import com.touki.otopost.util.BounceEdgeEffectFactory
@@ -56,10 +57,21 @@ class PostFragment : Fragment() {
         setupPostsRecycler()
         setupPostsObserver()
         setupErrorObserver()
+        binding.progressCircular.visibility = View.GONE
         fetchPosts()
     }
 
+
+    override fun onPause() {
+        super.onPause()
+        binding.progressCircular.visibility = View.GONE
+    }
+
     private fun fetchPosts() {
+        if (binding.progressCircular.isVisible) {
+            return
+        }
+
         binding.progressCircular.visibility = View.VISIBLE
         viewModel.fetchPosts()
     }
@@ -67,12 +79,17 @@ class PostFragment : Fragment() {
     private fun setupPostsRecycler() {
         adapter.setItemClickListener(recyclerItemClickListener)
         binding.recyclerPost.adapter = adapter
-        binding.recyclerPost.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.recyclerPost.edgeEffectFactory = bounceEdgeEffectFactory
-        binding.swipeRefresh.setOnRefreshListener {
-            binding.swipeRefresh.isRefreshing = false
-            fetchPosts()
+        binding.recyclerPost.layoutManager = object: LinearLayoutManager(requireContext()) {
+            override fun scrollVerticallyBy(dy: Int, recycler: RecyclerView.Recycler?, state: RecyclerView.State?): Int {
+                val scrollRange = super.scrollVerticallyBy(dy, recycler, state)
+                val overScroll = dy - scrollRange
+                if (overScroll < -60) { // minus value means its top over scroll
+                    fetchPosts()
+                }
+                return scrollRange
+            }
         }
+        binding.recyclerPost.edgeEffectFactory = bounceEdgeEffectFactory
     }
 
     private fun setupPostsObserver() {
