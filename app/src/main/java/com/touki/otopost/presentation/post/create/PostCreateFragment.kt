@@ -71,6 +71,10 @@ class PostCreateFragment : Fragment() {
         setSupportActionBar(binding.toolbar).setNavigationOnClickListener {
             handleGoBack()
         }
+        binding.toolbarButtonRight.setOnClickListener {
+            handleClearForm()
+        }
+
         setCreatedPostObserver()
         setErrorObserver()
         binding.buttonSubmit.setOnClickListener {
@@ -89,6 +93,30 @@ class PostCreateFragment : Fragment() {
         binding.postTitle.editText?.removeTextChangedListener(postTitleTextWatcher)
         binding.postContent.editText?.removeTextChangedListener(postContentTextWatcher)
         activity?.viewModelStore?.clear()
+    }
+
+    private fun clearForm() {
+        binding.postTitle.editText?.setText("")
+        binding.postContent.editText?.setText("")
+    }
+
+    private fun handleClearForm() {
+        val title = binding.postTitle.editText?.text.toString()
+        val content = binding.postContent.editText?.text.toString()
+
+        if (title.isNotBlank() or content.isNotBlank()) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(resources.getString(R.string.label_confirmation))
+                .setMessage(resources.getString(R.string.warning_clear_form))
+                .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(resources.getString(R.string.label_accept)) { dialog, _ ->
+                    dialog.dismiss()
+                    clearForm()
+                }
+                .show()
+        }
     }
 
     private fun handleGoBack() {
@@ -145,6 +173,22 @@ class PostCreateFragment : Fragment() {
         viewModel.createPost(title, content)
     }
 
+    private fun handleCreatePostSuccess() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.label_information))
+            .setMessage(resources.getString(R.string.info_create_post_success))
+            .setNegativeButton(resources.getString(R.string.label_back_to_posts)) { dialog, _ ->
+                dialog.dismiss()
+                clearForm()
+                handleGoBack()
+            }
+            .setPositiveButton(resources.getString(R.string.label_create_post_again)) { dialog, _ ->
+                dialog.dismiss()
+                clearForm()
+            }
+            .show()
+    }
+
     private fun startLoading() {
         hideSoftInput()
         binding.buttonSubmit.startAnimation()
@@ -161,9 +205,9 @@ class PostCreateFragment : Fragment() {
 
     private fun setCreatedPostObserver() {
         viewModel.createdPost.observe(viewLifecycleOwner, { post ->
-            Log.d("TAG", "post: $post created succesfully")
+            Log.d("TAG", "post: $post created successfully")
             stopLoading()
-            showMessage("post: $post created succesfully")
+            handleCreatePostSuccess()
         })
     }
 

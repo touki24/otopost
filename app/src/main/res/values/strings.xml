@@ -15,4 +15,9 @@
     <string name="error_title_too_short">Judul terlalu pendek, minimal %1d karakter</string>
     <string name="error_title_empty">Judul tidak boleh kosong</string>
     <string name="error_content_empty">Konten tidak boleh kosong</string>
+    <string name="warning_clear_form">Apakah anda yakin ingin membersihkan form?</string>
+    <string name="label_information">Informasi</string>
+    <string name="info_create_post_success">Woohoo, post berhasil dibuat!!\nApakah anda ingin membuat post lagi?</string>
+    <string name="label_back_to_posts">Kembali ke Posts</string>
+    <string name="label_create_post_again">Buat post lagi</string>
 </resources>
