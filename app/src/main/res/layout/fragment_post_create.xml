@@ -32,10 +32,10 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/toolbarButtonRight"
-                android:layout_width="50dp"
+                android:layout_width="45dp"
                 android:layout_height="match_parent"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_delete_sweep"
                 app:layout_constraintTop_toTopOf="parent"
@@ -43,8 +43,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </com.google.android.material.appbar.AppBarLayout>
 

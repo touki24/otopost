@@ -42,7 +42,16 @@ class PostDetailFragment : Fragment() {
                 goBack()
             }
         })
-        setupToolbar()
+        setSupportActionBar(binding.toolbar).setNavigationOnClickListener {
+            goBack()
+        }
+        binding.toolbarButtonDelete.setOnClickListener {
+            deletePost()
+        }
+        binding.toolbarButtonEdit.setOnClickListener {
+            showMessage("ke edit")
+        }
+
         setPostObserver()
         setDeletedPostObserver()
         setErrorObserver()
@@ -59,15 +68,6 @@ class PostDetailFragment : Fragment() {
     private fun goBack() {
         val action = PostDetailFragmentDirections.actionPostDetailFragmentToPostFragment()
         findNavController().navigateSafe(R.id.postDetailFragment, action)
-    }
-
-    private fun setupToolbar() {
-        binding.toolbarButtonLeft.setOnClickListener {
-            goBack()
-        }
-        binding.toolbarButtonRight.setOnClickListener {
-            deletePost()
-        }
     }
 
     private fun setPostObserver() {
