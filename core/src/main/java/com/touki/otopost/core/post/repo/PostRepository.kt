@@ -9,4 +9,6 @@ interface PostRepository {
     suspend fun fetchPost(postId: Int): CommonResult<Post>
 
     suspend fun deletePost(postId: Int): CommonResult<Post>
+
+    suspend fun createPost(title: String, content: String): CommonResult<Post>
 }
