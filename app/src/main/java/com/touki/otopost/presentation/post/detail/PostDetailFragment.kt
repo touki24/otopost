@@ -6,12 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.touki.otopost.common.extension.showMessage
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostDetailBinding
+import com.touki.otopost.util.extension.setSupportActionBar
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PostDetailFragment : Fragment() {
@@ -29,6 +32,16 @@ class PostDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSupportActionBar(binding.toolbar).setNavigationOnClickListener {
+            Log.d("TAG", "onViewCreated: back from top left")
+            findNavController().navigateUp()
+        }
+        activity?.onBackPressedDispatcher?.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.d("TAG", "onViewCreated: back from hardware")
+                findNavController().navigateUp()
+            }
+        })
         Log.d("TAG", "onViewCreated: ${args.postId}")
         initView()
         setupPostObserver()

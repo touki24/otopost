@@ -7,13 +7,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.post.PostFragment">
 
+    <!-- Toolbar  -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Posts">
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <ProgressBar
         android:id="@+id/progressCircular"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:paddingVertical="6dp"
-        android:indeterminateTint="@color/purple_500"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -21,7 +39,8 @@
         android:id="@+id/recyclerPost"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingVertical="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
         android:paddingHorizontal="16dp"
         android:clipChildren="false"
         android:clipToPadding="false"
@@ -29,8 +48,5 @@
         tools:listitem="@layout/item_post"
         app:layout_constraintTop_toBottomOf="@id/progressCircular"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

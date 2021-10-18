@@ -18,6 +18,7 @@ import com.touki.otopost.databinding.FragmentPostBinding
 import com.touki.otopost.presentation.post.adapter.PostRecyclerAdapter
 import com.touki.otopost.util.BounceEdgeEffectFactory
 import com.touki.otopost.util.extension.navigateSafe
+import com.touki.otopost.util.extension.setSupportActionBar
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PostFragment : Fragment() {
@@ -54,6 +55,7 @@ class PostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSupportActionBar(binding.toolbar, false)
         setupPostsRecycler()
         setupPostsObserver()
         setupErrorObserver()
@@ -96,9 +98,6 @@ class PostFragment : Fragment() {
         viewModel.posts.observe(viewLifecycleOwner, { posts ->
             binding.progressCircular.visibility = View.GONE
             adapter.setPosts(posts = posts)
-            posts.forEach { post ->
-                Log.d(TAG, post.toString())
-            }
         })
     }
 
