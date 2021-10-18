@@ -29,6 +29,9 @@
             android:name="postId"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_postDetailFragment_to_postUpdateFragment"
+            app:destination="@id/postUpdateFragment" />
     </fragment>
     <fragment
         android:id="@+id/postCreateFragment"
@@ -38,6 +41,27 @@
         <action
             android:id="@+id/action_postCreateFragment_to_postFragment"
             app:destination="@id/postFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postUpdateFragment"
+        android:name="com.touki.otopost.presentation.post.update.PostUpdateFragment"
+        android:label="fragment_post_update"
+        tools:layout="@layout/fragment_post_update" >
+        <action
+            android:id="@+id/action_postUpdateFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+        <argument
+            android:name="postId"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="postTitle"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="postContent"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 
 </navigation>

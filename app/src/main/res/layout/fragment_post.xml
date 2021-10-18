@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:title="Posts">
+                app:title="@string/label_posts">
 
             </androidx.appcompat.widget.Toolbar>
 

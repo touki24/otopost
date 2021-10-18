@@ -9,12 +9,15 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.navigation.NavAction
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.touki.otopost.R
+import com.touki.otopost.common.extension.orZero
 import com.touki.otopost.common.extension.showMessage
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostDetailBinding
@@ -27,6 +30,7 @@ class PostDetailFragment : Fragment() {
     private val binding: FragmentPostDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
     private val viewModel: PostDetailViewModel by sharedViewModel()
     private val args: PostDetailFragmentArgs by navArgs()
+    private var actionToPostUpdate: NavDirections? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +53,7 @@ class PostDetailFragment : Fragment() {
             deletePost()
         }
         binding.toolbarButtonEdit.setOnClickListener {
-            showMessage("ke edit")
+            goToPostUpdate()
         }
 
         setPostObserver()
@@ -70,17 +74,27 @@ class PostDetailFragment : Fragment() {
         findNavController().navigateSafe(R.id.postDetailFragment, action)
     }
 
+    private fun goToPostUpdate() {
+        actionToPostUpdate?.let {
+            findNavController().navigateSafe(R.id.postDetailFragment, it)
+        }
+    }
+
     private fun setPostObserver() {
         viewModel.post.observe(viewLifecycleOwner, { post ->
             binding.progressCircular.visibility = View.GONE
             populatePost(post.title, post.content)
+            actionToPostUpdate = PostDetailFragmentDirections.actionPostDetailFragmentToPostUpdateFragment(
+                postId = post.id,
+                postTitle = post.title,
+                postContent = post.content
+            )
         })
     }
 
     private fun setDeletedPostObserver() {
         viewModel.deletedPost.observe(viewLifecycleOwner, {
             binding.progressCircular.visibility = View.GONE
-            Log.d("TAG", "setupDeletedPostObserver: backnya kepanggil")
             goBack()
         })
     }
