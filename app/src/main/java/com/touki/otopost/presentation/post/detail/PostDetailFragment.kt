@@ -32,27 +32,11 @@ class PostDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSupportActionBar(binding.toolbar).setNavigationOnClickListener {
-            Log.d("TAG", "onViewCreated: back from top left")
-            findNavController().navigateUp()
-        }
-        activity?.onBackPressedDispatcher?.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                Log.d("TAG", "onViewCreated: back from hardware")
-                findNavController().navigateUp()
-            }
-        })
+        setSupportActionBar(binding.toolbar)
         Log.d("TAG", "onViewCreated: ${args.postId}")
-        initView()
         setupPostObserver()
         setupErrorObserver()
         fetchPost()
-    }
-
-    private fun initView() {
-        Log.d("TAG", "initView: ")
-        binding.title.text = ""
-        binding.content.text = ""
     }
 
     private fun fetchPost() {
@@ -63,7 +47,7 @@ class PostDetailFragment : Fragment() {
     private fun setupPostObserver() {
         viewModel.post.observe(viewLifecycleOwner, { post ->
             binding.progressCircular.visibility = View.GONE
-            populatePost(post = post)
+            populatePost(post.title, post.content)
         })
     }
 
@@ -75,8 +59,8 @@ class PostDetailFragment : Fragment() {
         })
     }
 
-    private fun populatePost(post: Post) {
-        binding.title.text = post.title
-        binding.content.text = post.content
+    private fun populatePost(title: String, content: String) {
+        binding.title.text = title
+        binding.content.text = content
     }
 }

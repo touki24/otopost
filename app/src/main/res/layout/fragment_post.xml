@@ -31,6 +31,8 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:paddingVertical="6dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/purple_500"
         app:layout_constraintTop_toBottomOf="@id/appBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
