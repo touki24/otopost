@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostDetailBinding
@@ -32,11 +33,20 @@ class PostDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSupportActionBar(binding.toolbar)
+        binding.toolbarButtonLeft.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        binding.toolbarButtonRight.setOnClickListener {
+            deletePost()
+        }
         Log.d("TAG", "onViewCreated: ${args.postId}")
         setupPostObserver()
         setupErrorObserver()
         fetchPost()
+    }
+
+    private fun deletePost() {
+        Log.d("TAG", "deletePost: ${args.postId}")
     }
 
     private fun fetchPost() {
