@@ -25,6 +25,10 @@ class FuelClient: HttpClient {
         requestClient = Fuel.delete(url)
     }
 
+    override fun put(url: String) = apply {
+        requestClient = Fuel.put(url)
+    }
+
     override fun download(url: String) = apply {
         requestClient = Fuel.download(url)
     }
