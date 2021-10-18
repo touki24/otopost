@@ -5,4 +5,8 @@
     <string name="label_confirmation">Konfirmasi</string>
     <string name="label_decline">Batal</string>
     <string name="label_accept">Ya</string>
+    <string name="digits_alphanumeric_and_symbols">ASDFGHJKLQWERTYUIOPZXCVBNMasdfghjkllqwertyuiopzxcvbnm1234567890,.!@#$%^*()_+=- ?</string>
+    <string name="label_title">Judul</string>
+    <string name="label_content">Konten</string>
+    <string name="label_create_post">Buat Post</string>
 </resources>
