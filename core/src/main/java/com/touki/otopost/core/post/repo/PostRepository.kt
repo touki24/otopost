@@ -11,4 +11,6 @@ interface PostRepository {
     suspend fun deletePost(postId: Int): CommonResult<Post>
 
     suspend fun createPost(title: String, content: String): CommonResult<Post>
+
+    suspend fun updatePost(id: Int, title: String, content: String): CommonResult<Post>
 }
