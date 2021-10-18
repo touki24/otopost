@@ -85,23 +85,30 @@
                     android:textSize="14sp"
                     android:lines="15"
                     android:gravity="top"
-                    android:digits="@string/digits_alphanumeric_and_symbols"
-                    android:inputType="textNoSuggestions"/>
+                    android:digits="@string/digits_alphanumeric_and_symbols_and_enter"
+                    android:inputType="textImeMultiLine"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
+            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
                 android:id="@+id/buttonSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:layout_marginHorizontal="18dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
+                android:textColor="@color/white"
+                android:background="@drawable/shape_rectangle_rounded_purple_500"
                 android:text="@string/label_create_post"
-                app:cornerRadius="8dp"
+                app:finalCornerAngle="25dp"
+                app:initialCornerAngle="8dp"
+                app:spinning_bar_width="4dp"
+                app:spinning_bar_color="@color/white"
+                app:spinning_bar_padding="5dp"
                 app:layout_constraintTop_toBottomOf="@id/postContent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,51 +42,55 @@ class PostDetailFragment : Fragment() {
                 goBack()
             }
         })
+        setupToolbar()
+        setPostObserver()
+        setDeletedPostObserver()
+        setErrorObserver()
+        Log.d("TAG", "onViewCreated: ${args.postId}")
+        binding.progressCircular.visibility = View.GONE
+        fetchPost()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.viewModelStore?.clear()
+    }
+
+    private fun goBack() {
+        val action = PostDetailFragmentDirections.actionPostDetailFragmentToPostFragment()
+        findNavController().navigateSafe(R.id.postDetailFragment, action)
+    }
+
+    private fun setupToolbar() {
         binding.toolbarButtonLeft.setOnClickListener {
             goBack()
         }
         binding.toolbarButtonRight.setOnClickListener {
             deletePost()
         }
-        Log.d("TAG", "onViewCreated: ${args.postId}")
-        binding.progressCircular.visibility = View.GONE
-        fetchPost()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.post.observe(viewLifecycleOwner, postObserver)
-        viewModel.deletedPost.observe(viewLifecycleOwner, deletedPostObserver)
-        viewModel.error.observe(viewLifecycleOwner, errorObserver)
+    private fun setPostObserver() {
+        viewModel.post.observe(viewLifecycleOwner, { post ->
+            binding.progressCircular.visibility = View.GONE
+            populatePost(post.title, post.content)
+        })
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.post.removeObserver(postObserver)
-        viewModel.deletedPost.removeObserver(deletedPostObserver)
-        viewModel.error.removeObserver(errorObserver)
-        activity?.viewModelStore?.clear()
+    private fun setDeletedPostObserver() {
+        viewModel.deletedPost.observe(viewLifecycleOwner, {
+            binding.progressCircular.visibility = View.GONE
+            Log.d("TAG", "setupDeletedPostObserver: backnya kepanggil")
+            goBack()
+        })
     }
 
-    private fun goBack() {
-        findNavController().navigateSafe(R.id.postDetailFragment, R.id.action_postDetailFragment_to_postFragment)
-    }
-
-    private val postObserver = Observer<Post> { post ->
-        binding.progressCircular.visibility = View.GONE
-        populatePost(post.title, post.content)
-    }
-
-    private val deletedPostObserver = Observer<Post> {
-        binding.progressCircular.visibility = View.GONE
-        Log.d("TAG", "setupDeletedPostObserver: backnya kepanggil")
-        goBack()
-    }
-
-    private val errorObserver = Observer<String> { message ->
-        binding.progressCircular.visibility = View.GONE
-        Log.d("", "setupErrorObserver: $message")
-        showMessage(message)
+    private fun setErrorObserver() {
+        viewModel.error.observe(viewLifecycleOwner, { message ->
+            binding.progressCircular.visibility = View.GONE
+            Log.d("", "setupErrorObserver: $message")
+            showMessage(message)
+        })
     }
 
     private fun deletePost() {
