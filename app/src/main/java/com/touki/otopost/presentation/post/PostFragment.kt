@@ -79,6 +79,7 @@ class PostFragment : Fragment() {
 
         setupPostsRecycler()
         setPostsObserver()
+        setCachePostsObserver()
         setErrorObserver()
 
         binding.progressCircular.visibility = View.GONE
@@ -122,7 +123,17 @@ class PostFragment : Fragment() {
 
     private fun setPostsObserver() {
         viewModel.posts.observe(viewLifecycleOwner, { posts ->
+            Log.d(TAG, "setPostsObserver: fetched from api")
             binding.progressCircular.visibility = View.GONE
+            if (adapter.setPosts(posts = posts)) {
+                binding.recyclerPost.smoothScrollToPosition(0)
+            }
+        })
+    }
+
+    private fun setCachePostsObserver() {
+        viewModel.cachePosts.observe(viewLifecycleOwner, { posts ->
+            Log.d(TAG, "setCachePostsObserver: loaded from cache")
             adapter.setPosts(posts = posts)
         })
     }

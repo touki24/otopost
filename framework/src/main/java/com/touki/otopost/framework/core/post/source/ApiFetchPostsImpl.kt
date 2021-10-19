@@ -6,6 +6,7 @@ import com.touki.otopost.common.result.ResultWithCache
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.core.post.source.ApiFetchPosts
 import com.touki.otopost.framework.BuildConfig
+import com.touki.otopost.framework.core.post.extension.sortFromLatestToOldest
 import com.touki.otopost.framework.core.post.mapper.PostMapper
 import com.touki.otopost.framework.core.post.model.FetchPostsResponse
 import com.touki.otopost.framework.http.Deserializer
@@ -33,7 +34,7 @@ internal class ApiFetchPostsImpl(private val httpClient: HttpClient, private val
                 val posts = postEntities?.map { postEntity ->
                     mapper.entityToModel(postEntity)
                 }
-                val sortedPosts = sortFromLatestToOldest(posts ?: listOf())
+                val sortedPosts = posts?.sortFromLatestToOldest() ?: run { listOf() }
                 return ResultWithCache.Failure(error = error, cache = sortedPosts)
             }
         )
@@ -43,7 +44,7 @@ internal class ApiFetchPostsImpl(private val httpClient: HttpClient, private val
             posts.add(mapper.responseToModel(item))
         }
 
-        val sortedPosts = sortFromLatestToOldest(posts)
+        val sortedPosts = posts.sortFromLatestToOldest()
 
         val postEntities = sortedPosts.map { post ->
             mapper.modelToEntity(post)
@@ -57,14 +58,5 @@ internal class ApiFetchPostsImpl(private val httpClient: HttpClient, private val
         postDao.insert(postEntities)
 
         return ResultWithCache.Success(sortedPosts)
-    }
-
-    private fun sortFromLatestToOldest(posts: List<Post>): List<Post> {
-        val postsToSort: MutableList<Post> = mutableListOf()
-        posts.forEach { item ->
-            postsToSort.add(item)
-        }
-        postsToSort.sortWith { o1, o2 -> o2.updatedAt.compareTo(o1.updatedAt) } // sort from latest to oldest
-        return postsToSort
     }
 }

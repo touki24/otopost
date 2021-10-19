@@ -22,12 +22,21 @@ class PostRecyclerAdapter: RecyclerView.Adapter<PostRecyclerAdapter.Holder>() {
     private var posts: MutableList<Post> = mutableListOf()
     private var listener: ItemClickListener? = null
 
-    fun setPosts(posts: List<Post>) {
+    private fun getIdPositionZero(posts: List<Post>): Int {
+        if (posts.isEmpty()) {
+            return 0
+        }
+        return posts[0].id
+    }
+
+    fun setPosts(posts: List<Post>): Boolean { // return true if position zero is different
+        val isNeedToScroll = getIdPositionZero(this.posts) != getIdPositionZero(posts)
         val diffCallback = PostDiffCallback(this.posts, posts)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.posts.clear()
         this.posts.addAll(posts)
         diffResult.dispatchUpdatesTo(this)
+        return isNeedToScroll
     }
 
     fun setItemClickListener(listener: ItemClickListener) {
