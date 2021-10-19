@@ -2,6 +2,8 @@ package com.touki.otopost
 
 import android.app.Application
 import com.touki.otopost.framework.frameworkCorePostModules
+import com.touki.otopost.framework.frameworkDatabaseModules
+import com.touki.otopost.framework.frameworkHttpModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -20,6 +22,8 @@ class App: Application() {
             modules(listOf(
                 appPostModules,
                 frameworkCorePostModules,
+                frameworkDatabaseModules,
+                frameworkHttpModules
             ))
         }
     }

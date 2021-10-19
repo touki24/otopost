@@ -2,6 +2,7 @@ package com.touki.otopost.framework.core.post.source
 
 import android.util.Log
 import com.touki.otopost.common.result.CommonResult
+import com.touki.otopost.common.result.ResultWithCache
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.core.post.source.ApiFetchPosts
 import com.touki.otopost.framework.BuildConfig
@@ -9,8 +10,10 @@ import com.touki.otopost.framework.core.post.mapper.PostMapper
 import com.touki.otopost.framework.core.post.model.FetchPostsResponse
 import com.touki.otopost.framework.http.Deserializer
 import com.touki.otopost.framework.http.HttpClient
+import java.util.*
+import kotlin.Comparator
 
-internal class ApiFetchPostsImpl(private val httpClient: HttpClient): ApiFetchPosts {
+internal class ApiFetchPostsImpl(private val httpClient: HttpClient, private val postDao: PostDao): ApiFetchPosts {
     private val mapper by lazy {
         PostMapper()
     }
@@ -19,20 +22,49 @@ internal class ApiFetchPostsImpl(private val httpClient: HttpClient): ApiFetchPo
         Deserializer<FetchPostsResponse>(FetchPostsResponse::class.java)
     }
 
-    override suspend fun invoke(): CommonResult<List<Post>> {
+    override suspend fun invoke(): ResultWithCache<List<Post>> {
         val url = "${BuildConfig.BASE_URL}/posts"
         val result = httpClient.get(url).log("API-POST").dispatch(timeout = 10000, timeoutRead = 10000).fold(
             success = {
                 deserializer.deserialize(it)
             },
             failure = { error ->
-                return CommonResult.Failure(error)
+                val postEntities = postDao.selectAll()
+                val posts = postEntities?.map { postEntity ->
+                    mapper.entityToModel(postEntity)
+                }
+                val sortedPosts = sortFromLatestToOldest(posts ?: listOf())
+                return ResultWithCache.Failure(error = error, cache = sortedPosts)
             }
         )
 
-        val posts = result.map { item ->
-            mapper.responseToModel(item)
+        val posts: MutableList<Post> = mutableListOf()
+        result.forEach { item ->
+            posts.add(mapper.responseToModel(item))
         }
-        return CommonResult.Success(posts)
+
+        val sortedPosts = sortFromLatestToOldest(posts)
+
+        val postEntities = sortedPosts.map { post ->
+            mapper.modelToEntity(post)
+        }
+
+        postEntities.forEach {
+            Log.d("TAG", "PostEntity($it) ")
+        }
+
+        postDao.deleteAll()
+        postDao.insert(postEntities)
+
+        return ResultWithCache.Success(sortedPosts)
+    }
+
+    private fun sortFromLatestToOldest(posts: List<Post>): List<Post> {
+        val postsToSort: MutableList<Post> = mutableListOf()
+        posts.forEach { item ->
+            postsToSort.add(item)
+        }
+        postsToSort.sortWith { o1, o2 -> o2.updatedAt.compareTo(o1.updatedAt) } // sort from latest to oldest
+        return postsToSort
     }
 }

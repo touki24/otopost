@@ -1,8 +1,13 @@
 package com.touki.otopost.common.extension
 
 import android.util.Log
+import com.touki.otopost.common.constant.DATE_TIME_ISO_8601
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 fun String?.toDate(format: String): Date {
@@ -24,4 +29,15 @@ fun String?.toDate(format: String): Date {
 fun Date.toString(format: String): String {
     val sdf = SimpleDateFormat(format, Locale.getDefault())
     return sdf.format(this)
+}
+
+fun Date.toIso8601(): String {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        val dtf = DateTimeFormatter.ofPattern(DATE_TIME_ISO_8601)
+        val zdt = this.toInstant().atZone(ZoneOffset.UTC)
+        return dtf.format(zdt)
+    } else {
+        //TODO: not tested yep, hope this won't crash on android bellow oreo
+        return this.toString(DATE_TIME_ISO_8601)
+    }
 }

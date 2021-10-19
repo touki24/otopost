@@ -1,5 +1,6 @@
 package com.touki.otopost.framework
 
+import android.content.Context
 import com.touki.otopost.core.post.repo.PostRepository
 import com.touki.otopost.core.post.source.*
 import com.touki.otopost.framework.core.post.repo.PostRepositoryImpl
@@ -9,6 +10,7 @@ import com.touki.otopost.framework.core.post.source.ApiDeletePostImpl
 import com.touki.otopost.framework.core.post.source.ApiFetchPostImpl
 import com.touki.otopost.framework.core.post.source.ApiFetchPostsImpl
 import com.touki.otopost.framework.core.post.source.ApiUpdatePostImpl
+import com.touki.otopost.framework.database.OtopostDatabase
 import com.touki.otopost.framework.http.FuelClient
 import com.touki.otopost.framework.http.HttpClient
 import org.koin.dsl.module
@@ -34,7 +36,8 @@ val frameworkCorePostModules = module {
 
     factory<ApiFetchPosts> {
         ApiFetchPostsImpl(
-            httpClient = get<HttpClient>()
+            httpClient = get<HttpClient>(),
+            postDao = get<PostDao>()
         )
     }
 
@@ -53,7 +56,19 @@ val frameworkCorePostModules = module {
             apiUpdatePost = get<ApiUpdatePost>()
         )
     }
+}
 
+val frameworkDatabaseModules = module {
+    factory<OtopostDatabase?> {
+        OtopostDatabase.getInstance(get<Context>())
+    }
+
+    factory<PostDao> {
+        get<OtopostDatabase>().getPostDao()
+    }
+}
+
+val frameworkHttpModules = module {
     factory<HttpClient> {
         FuelClient()
     }
