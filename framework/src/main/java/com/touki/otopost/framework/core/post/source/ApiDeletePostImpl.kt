@@ -9,7 +9,7 @@ import com.touki.otopost.framework.core.post.model.FetchPostResponse
 import com.touki.otopost.framework.http.Deserializer
 import com.touki.otopost.framework.http.HttpClient
 
-class ApiDeletePostImpl(private val httpClient: HttpClient): ApiDeletePost {
+internal class ApiDeletePostImpl(private val httpClient: HttpClient): ApiDeletePost {
     private val mapper by lazy {
         PostMapper()
     }

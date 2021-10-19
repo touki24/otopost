@@ -10,6 +10,7 @@
     <string name="label_title">Judul</string>
     <string name="label_content">Konten</string>
     <string name="label_create_post">Buat Post</string>
+    <string name="label_update_post">Perbarui Post</string>
     <string name="warning_back_confirmation">Anda memiliki post yang belum tersimpan, apakah anda yakin untuk kembali?\nPost yang belum tersimpan tidak dapat ditampilkan kembali.</string>
     <string name="error_content_too_short">Konten terlalu pendek, minimal %1d karakter</string>
     <string name="error_title_too_short">Judul terlalu pendek, minimal %1d karakter</string>
@@ -20,4 +21,8 @@
     <string name="info_create_post_success">Woohoo, post berhasil dibuat!!\nApakah anda ingin membuat post lagi?</string>
     <string name="label_back_to_posts">Kembali ke Posts</string>
     <string name="label_create_post_again">Buat post lagi</string>
+    <string name="label_posts">Posts</string>
+    <string name="warning_post_update_not_submited">Perubahan yang anda lakukan belum tersimpan, apakah anda yakin ingin kembali?\nPerubahan yang anda lakukan akan hilang jika belum tersimpan</string>
+    <string name="info_update_post_success">Berhasil mengubah post!</string>
+    <string name="error_update_post_the_same">Tidak ada perubahan pada judul maupun konten.</string>
 </resources>

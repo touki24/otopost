@@ -1,30 +1,33 @@
-package com.touki.otopost.presentation.post.create
+package com.touki.otopost.presentation.post.update
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
-import com.touki.otopost.databinding.FragmentPostCreateBinding
+import com.touki.otopost.databinding.FragmentPostUpdateBinding
+import com.touki.otopost.presentation.post.create.PostCreateFragmentDirections
 import com.touki.otopost.util.extension.hideSoftInput
 import com.touki.otopost.util.extension.navigateSafe
 import com.touki.otopost.util.extension.setSupportActionBar
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class PostCreateFragment : Fragment() {
+class PostUpdateFragment : Fragment() {
 
-    private val binding: FragmentPostCreateBinding by viewBinding(createMethod = CreateMethod.INFLATE)
-    private val viewModel: PostCreateViewModel by sharedViewModel()
+    private val binding: FragmentPostUpdateBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private val viewModel: PostUpdateViewModel by sharedViewModel()
+    private val args: PostUpdateFragmentArgs by navArgs()
 
     private val postTitleTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -63,6 +66,7 @@ class PostCreateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         activity?.onBackPressedDispatcher?.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 handleGoBack()
@@ -74,12 +78,13 @@ class PostCreateFragment : Fragment() {
         binding.toolbarButtonClear.setOnClickListener {
             handleClearForm()
         }
-
-        setCreatedPostObserver()
-        setErrorObserver()
         binding.buttonSubmit.setOnClickListener {
-            handleCreatePost()
+            handleUpdatePost()
         }
+
+        setUpdatedPostObserver()
+        setErrorObserver()
+        fillForm()
     }
 
     override fun onResume() {
@@ -100,45 +105,12 @@ class PostCreateFragment : Fragment() {
         binding.postContent.editText?.setText("")
     }
 
-    private fun handleClearForm() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(resources.getString(R.string.label_confirmation))
-            .setMessage(resources.getString(R.string.warning_clear_form))
-            .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            .setPositiveButton(resources.getString(R.string.label_accept)) { dialog, _ ->
-                dialog.dismiss()
-                clearForm()
-            }
-            .show()
+    private fun fillForm() {
+        binding.postTitle.editText?.setText(args.postTitle)
+        binding.postContent.editText?.setText(args.postContent)
     }
 
-    private fun handleGoBack() {
-        hideSoftInput()
-        val title = binding.postTitle.editText?.text.toString().trim()
-        val content = binding.postContent.editText?.text.toString().trim()
-
-        if (title.isNotBlank() or content.isNotBlank()) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(resources.getString(R.string.label_confirmation))
-                .setMessage(resources.getString(R.string.warning_back_confirmation))
-                .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setPositiveButton(resources.getString(R.string.label_accept)) { dialog, _ ->
-                    goBack()
-                    dialog.dismiss()
-                }
-                .show()
-
-            return
-        }
-
-        goBack()
-    }
-
-    private fun handleCreatePost() {
+    private fun handleUpdatePost() {
         val title = binding.postTitle.editText?.text.toString().trim()
         val content = binding.postContent.editText?.text.toString().trim()
 
@@ -164,24 +136,55 @@ class PostCreateFragment : Fragment() {
             return
         }
 
+        if ((title == args.postTitle) and (content == args.postContent)) {
+            showMessage(resources.getString(R.string.error_update_post_the_same))
+            return
+        }
+
         startLoading()
-        viewModel.createPost(title, content)
+        viewModel.updatePost(args.postId, title, content)
     }
 
-    private fun handleCreatePostSuccess() {
+    private fun handleClearForm() {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(resources.getString(R.string.label_information))
-            .setMessage(resources.getString(R.string.info_create_post_success))
-            .setNegativeButton(resources.getString(R.string.label_back_to_posts)) { dialog, _ ->
+            .setTitle(resources.getString(R.string.label_confirmation))
+            .setMessage(resources.getString(R.string.warning_clear_form))
+            .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
                 dialog.dismiss()
-                clearForm()
-                handleGoBack()
             }
-            .setPositiveButton(resources.getString(R.string.label_create_post_again)) { dialog, _ ->
+            .setPositiveButton(resources.getString(R.string.label_accept)) { dialog, _ ->
                 dialog.dismiss()
                 clearForm()
             }
             .show()
+    }
+
+    private fun handleGoBack() {
+        hideSoftInput()
+        val title = binding.postTitle.editText?.text.toString().trim()
+        val content = binding.postContent.editText?.text.toString().trim()
+
+        if ((title != args.postTitle) or (content != args.postContent)) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(resources.getString(R.string.label_confirmation))
+                .setMessage(resources.getString(R.string.warning_post_update_not_submited))
+                .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(resources.getString(R.string.label_accept)) { dialog, _ ->
+                    goBack()
+                    dialog.dismiss()
+                }
+                .show()
+
+            return
+        }
+        goBack()
+    }
+
+    private fun goBack() {
+        val action = PostUpdateFragmentDirections.actionPostUpdateFragmentToPostDetailFragment(args.postId)
+        findNavController().navigateSafe(R.id.postUpdateFragment, action)
     }
 
     private fun startLoading() {
@@ -193,16 +196,12 @@ class PostCreateFragment : Fragment() {
         binding.buttonSubmit.revertAnimation()
     }
 
-    private fun goBack() {
-        val action = PostCreateFragmentDirections.actionPostCreateFragmentToPostFragment()
-        findNavController().navigateSafe(R.id.postCreateFragment, action)
-    }
-
-    private fun setCreatedPostObserver() {
-        viewModel.createdPost.observe(viewLifecycleOwner, { post ->
+    private fun setUpdatedPostObserver() {
+        viewModel.updatedPost.observe(viewLifecycleOwner, { post ->
             Log.d("TAG", "post: $post created successfully")
             stopLoading()
-            handleCreatePostSuccess()
+            goBack()
+            showMessage(resources.getString(R.string.info_update_post_success))
         })
     }
 
@@ -213,5 +212,4 @@ class PostCreateFragment : Fragment() {
             showMessage(message)
         })
     }
-
 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.post.create.PostCreateFragment">
+    tools:context=".presentation.post.update.PostUpdateFragment">
 
     <!-- Toolbar  -->
     <com.google.android.material.appbar.AppBarLayout
@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
-                app:title="@string/label_create_post"
+                app:title="@string/label_update_post"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -119,7 +119,7 @@
                 android:layout_marginHorizontal="18dp"
                 android:textColor="@color/white"
                 android:background="@drawable/shape_rectangle_rounded_purple_500"
-                android:text="@string/label_create_post"
+                android:text="@string/label_update_post"
                 app:finalCornerAngle="25dp"
                 app:initialCornerAngle="8dp"
                 app:spinning_bar_width="4dp"

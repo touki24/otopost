@@ -3,7 +3,7 @@ package com.touki.otopost.framework.core.post.model
 
 import com.google.gson.annotations.SerializedName
 
-data class FetchPostResponse(
+internal data class FetchPostResponse(
     @SerializedName("id")
     val id: Int? = null,
     @SerializedName("title")
