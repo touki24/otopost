@@ -13,13 +13,13 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_no_post"
-            app:layout_constraintBottom_toTopOf="@id/title"
+            app:layout_constraintBottom_toTopOf="@id/noPostTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title"
+            android:id="@+id/noPostTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -34,13 +34,13 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/message"
+            android:id="@+id/noPostMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textAlignment="center"
             tools:text="Swipe ke atas untuk refresh"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/noPostTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />

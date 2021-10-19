@@ -28,4 +28,5 @@
     <string name="info_updated_at">Pembaruan: %1s</string>
     <string name="label_no_post">Tidak ada post</string>
     <string name="info_swipe_to_refresh">Swipe ke atas untuk refresh.</string>
+    <string name="info_please_go_back_and_try_again">Silakan kembali dan coba beberapa saat lagi</string>
 </resources>

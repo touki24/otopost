@@ -154,8 +154,8 @@ class PostFragment : Fragment() {
 
     private fun setupPostEmptyLayout() {
         noPostBinding.layoutNoPost.visibility = View.GONE
-        noPostBinding.title.text = resources.getString(R.string.label_no_post)
-        noPostBinding.message.text = resources.getString(R.string.info_swipe_to_refresh)
+        noPostBinding.noPostTitle.text = resources.getString(R.string.label_no_post)
+        noPostBinding.noPostMessage.text = resources.getString(R.string.info_swipe_to_refresh)
     }
 
     private fun showPostEmptyLayout(isShow: Boolean) {
