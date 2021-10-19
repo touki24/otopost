@@ -26,4 +26,6 @@
     <string name="info_update_post_success">Berhasil mengubah post!</string>
     <string name="error_update_post_the_same">Tidak ada perubahan pada judul maupun konten.</string>
     <string name="info_updated_at">Pembaruan: %1s</string>
+    <string name="label_no_post">Tidak ada post</string>
+    <string name="info_swipe_to_refresh">Swipe ke atas untuk refresh.</string>
 </resources>
