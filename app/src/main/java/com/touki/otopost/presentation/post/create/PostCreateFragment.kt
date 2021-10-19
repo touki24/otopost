@@ -104,6 +104,7 @@ class PostCreateFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.label_confirmation))
             .setMessage(resources.getString(R.string.warning_clear_form))
+            .setCancelable(false)
             .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
                 dialog.dismiss()
             }
@@ -123,6 +124,7 @@ class PostCreateFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(resources.getString(R.string.label_confirmation))
                 .setMessage(resources.getString(R.string.warning_back_confirmation))
+                .setCancelable(false)
                 .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
                     dialog.dismiss()
                 }
@@ -172,6 +174,7 @@ class PostCreateFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.label_information))
             .setMessage(resources.getString(R.string.info_create_post_success))
+            .setCancelable(false)
             .setNegativeButton(resources.getString(R.string.label_back_to_posts)) { dialog, _ ->
                 dialog.dismiss()
                 clearForm()

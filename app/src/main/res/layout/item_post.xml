@@ -35,13 +35,28 @@
             android:id="@+id/content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:textSize="14sp"
             android:maxLines="2"
             tools:text="Ini Contentnya"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/updatedAt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textAlignment="textEnd"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:maxLines="2"
+            tools:text="@string/info_updated_at"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

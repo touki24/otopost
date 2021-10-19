@@ -1,9 +1,15 @@
 package com.touki.otopost.presentation.post.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.textview.MaterialTextView
+import com.touki.otopost.R
+import com.touki.otopost.common.constant.DATE_TIME_POST
+import com.touki.otopost.common.extension.toString
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.ItemPostBinding
 
@@ -29,7 +35,8 @@ class PostRecyclerAdapter: RecyclerView.Adapter<PostRecyclerAdapter.Holder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false), listener)
+        val rootView = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
+        return Holder(rootView, listener)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
@@ -40,11 +47,17 @@ class PostRecyclerAdapter: RecyclerView.Adapter<PostRecyclerAdapter.Holder>() {
         return posts.size
     }
 
-    class Holder(private val binding: ItemPostBinding, private val listener: ItemClickListener?): RecyclerView.ViewHolder(binding.root) {
+    class Holder(itemView: View, private val listener: ItemClickListener?): RecyclerView.ViewHolder(itemView) {
+        private val textTitle: MaterialTextView = itemView.findViewById(R.id.title)
+        private val textContent: MaterialTextView = itemView.findViewById(R.id.content)
+        private val textUpdatedAt: MaterialTextView = itemView.findViewById(R.id.updatedAt)
+        private val container: MaterialCardView = itemView.findViewById(R.id.container)
+
         fun bind(post: Post) {
-            binding.title.text = post.title
-            binding.content.text = post.content
-            binding.container.setOnClickListener {
+            textTitle.text = post.title
+            textContent.text = post.content
+            textUpdatedAt.text = itemView.context.resources.getString(R.string.info_updated_at, post.updatedAt.toString(DATE_TIME_POST))
+            container.setOnClickListener {
                 listener?.onClick(post.id)
             }
         }

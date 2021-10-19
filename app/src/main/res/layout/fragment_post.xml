@@ -20,15 +20,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:title="@string/label_posts">
+                android:layout_height="wrap_content"
+                android:paddingStart="0dp"
+                android:paddingEnd="16dp">
 
-            </androidx.appcompat.widget.Toolbar>
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/actionBarSize"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+                    app:title="@string/label_posts"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/toolbarSwitchDarkMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_dark_mode"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
         <ProgressBar
@@ -51,6 +67,7 @@
             android:paddingHorizontal="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="88dp"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/progressCircular"
             tools:itemCount="13"
@@ -66,6 +83,7 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="24dp"
         android:contentDescription="@string/app_name"
+        app:borderWidth="0dp"
         android:backgroundTint="@color/purple_500"
         app:tint="@color/white"
         app:srcCompat="@drawable/ic_add"

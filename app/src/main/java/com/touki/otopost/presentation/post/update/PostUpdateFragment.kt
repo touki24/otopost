@@ -17,7 +17,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
 import com.touki.otopost.databinding.FragmentPostUpdateBinding
-import com.touki.otopost.presentation.post.create.PostCreateFragmentDirections
 import com.touki.otopost.util.extension.hideSoftInput
 import com.touki.otopost.util.extension.navigateSafe
 import com.touki.otopost.util.extension.setSupportActionBar
@@ -149,6 +148,7 @@ class PostUpdateFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.label_confirmation))
             .setMessage(resources.getString(R.string.warning_clear_form))
+            .setCancelable(false)
             .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
                 dialog.dismiss()
             }
@@ -168,6 +168,7 @@ class PostUpdateFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(resources.getString(R.string.label_confirmation))
                 .setMessage(resources.getString(R.string.warning_post_update_not_submited))
+                .setCancelable(false)
                 .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
                     dialog.dismiss()
                 }

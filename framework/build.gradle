@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -69,6 +70,11 @@ dependencies {
 
     final gson_version = '2.8.6'
     implementation "com.google.code.gson:gson:$gson_version"
+
+    final room_version = '2.3.0'
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version" // Kotlin Extensions and Coroutines support for Room
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

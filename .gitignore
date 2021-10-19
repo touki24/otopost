@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+*.keystore
+app/production
+app/development
+app/staging

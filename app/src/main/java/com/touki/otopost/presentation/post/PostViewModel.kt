@@ -23,8 +23,9 @@ class PostViewModel(private val postRepository: PostRepository): ViewModel() {
                 success = { posts ->
                     _posts.postValue(posts)
                 },
-                failure = { error ->
+                failure = { error, cache ->
                     _error.postValue(error.message)
+                    _posts.postValue(cache)
                 }
             )
         }
