@@ -20,3 +20,8 @@ fun String?.toDate(format: String): Date {
         sdf.parse(dateString) ?: Date()
     }
 }
+
+fun Date.toString(format: String): String {
+    val sdf = SimpleDateFormat(format, Locale.getDefault())
+    return sdf.format(this)
+}

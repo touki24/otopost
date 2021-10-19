@@ -25,4 +25,5 @@
     <string name="warning_post_update_not_submited">Perubahan yang anda lakukan belum tersimpan, apakah anda yakin ingin kembali?\nPerubahan yang anda lakukan akan hilang jika belum tersimpan</string>
     <string name="info_update_post_success">Berhasil mengubah post!</string>
     <string name="error_update_post_the_same">Tidak ada perubahan pada judul maupun konten.</string>
+    <string name="info_updated_at">Pembaruan: %1s</string>
 </resources>

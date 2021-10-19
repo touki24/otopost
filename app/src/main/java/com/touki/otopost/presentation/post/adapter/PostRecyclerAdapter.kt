@@ -4,6 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.touki.otopost.R
+import com.touki.otopost.common.constant.DATE_TIME_POST
+import com.touki.otopost.common.extension.toString
 import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.ItemPostBinding
 
@@ -44,6 +47,7 @@ class PostRecyclerAdapter: RecyclerView.Adapter<PostRecyclerAdapter.Holder>() {
         fun bind(post: Post) {
             binding.title.text = post.title
             binding.content.text = post.content
+            binding.updatedAt.text = binding.root.context.resources.getString(R.string.info_updated_at, post.updatedAt.toString(DATE_TIME_POST))
             binding.container.setOnClickListener {
                 listener?.onClick(post.id)
             }
