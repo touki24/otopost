@@ -2,14 +2,12 @@ package com.touki.otopost.presentation.post.detail
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.navigation.NavAction
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,9 +15,7 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.touki.otopost.R
-import com.touki.otopost.common.extension.orZero
 import com.touki.otopost.common.extension.showMessage
-import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostDetailBinding
 import com.touki.otopost.util.extension.navigateSafe
 import com.touki.otopost.util.extension.setSupportActionBar
@@ -115,6 +111,7 @@ class PostDetailFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.label_confirmation))
             .setMessage(resources.getString(R.string.warning_deleting_post))
+            .setCancelable(false)
             .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
                 dialog.dismiss()
             }

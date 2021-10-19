@@ -7,11 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,12 +17,10 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
-import com.touki.otopost.core.post.model.Post
 import com.touki.otopost.databinding.FragmentPostBinding
 import com.touki.otopost.presentation.post.adapter.PostRecyclerAdapter
 import com.touki.otopost.util.BounceEdgeEffectFactory
 import com.touki.otopost.util.extension.navigateSafe
-import com.touki.otopost.util.extension.setSupportActionBar
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PostFragment : Fragment() {
