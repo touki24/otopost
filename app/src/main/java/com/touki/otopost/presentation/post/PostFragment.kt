@@ -1,10 +1,14 @@
 package com.touki.otopost.presentation.post
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -28,6 +32,7 @@ class PostFragment : Fragment() {
     companion object {
         private const val TAG = "POST-FRAG"
     }
+    private lateinit var prefs: SharedPreferences
     private val binding: FragmentPostBinding by viewBinding(createMethod = CreateMethod.INFLATE)
     private val viewModel: PostViewModel by sharedViewModel()
     private val adapter by lazy {
@@ -55,9 +60,27 @@ class PostFragment : Fragment() {
         return binding.root
     }
 
+    //TODO: fungsi ini belum selesai, perlu disesuaikan dengan design pattern sekarang
+    private fun toggleDarkMode(isDarkMode: Boolean) {
+        if (isDarkMode) {
+            prefs.edit().putInt("dark_mode", AppCompatDelegate.MODE_NIGHT_YES).apply()
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            prefs.edit().putInt("dark_mode", AppCompatDelegate.MODE_NIGHT_NO).apply()
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSupportActionBar(binding.toolbar, false)
+        //TODO: fungsi ini belum selesai, perlu disesuaikan dengan design pattern sekarang
+        prefs = requireContext().getSharedPreferences("otopost", Context.MODE_PRIVATE)
+        val darkMode = prefs.getInt("dark_mode", AppCompatDelegate.MODE_NIGHT_NO)
+        binding.toolbarSwitchDarkMode.isChecked = darkMode != AppCompatDelegate.MODE_NIGHT_NO
+        binding.toolbarSwitchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            toggleDarkMode(isChecked)
+        }
+
         setupPostsRecycler()
         setPostsObserver()
         setErrorObserver()
