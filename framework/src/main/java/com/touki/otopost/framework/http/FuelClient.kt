@@ -10,7 +10,7 @@ import com.touki.otopost.common.result.CommonResult
 import com.touki.otopost.common.result.HttpError
 import java.io.InputStream
 
-class FuelClient: HttpClient {
+internal class FuelClient: HttpClient {
     private lateinit var requestClient : Request
 
     override fun post(url : String) = apply {

@@ -101,28 +101,23 @@ class PostCreateFragment : Fragment() {
     }
 
     private fun handleClearForm() {
-        val title = binding.postTitle.editText?.text.toString()
-        val content = binding.postContent.editText?.text.toString()
-
-        if (title.isNotBlank() or content.isNotBlank()) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(resources.getString(R.string.label_confirmation))
-                .setMessage(resources.getString(R.string.warning_clear_form))
-                .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setPositiveButton(resources.getString(R.string.label_accept)) { dialog, _ ->
-                    dialog.dismiss()
-                    clearForm()
-                }
-                .show()
-        }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.label_confirmation))
+            .setMessage(resources.getString(R.string.warning_clear_form))
+            .setNegativeButton(resources.getString(R.string.label_decline)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(resources.getString(R.string.label_accept)) { dialog, _ ->
+                dialog.dismiss()
+                clearForm()
+            }
+            .show()
     }
 
     private fun handleGoBack() {
         hideSoftInput()
-        val title = binding.postTitle.editText?.text.toString()
-        val content = binding.postContent.editText?.text.toString()
+        val title = binding.postTitle.editText?.text.toString().trim()
+        val content = binding.postContent.editText?.text.toString().trim()
 
         if (title.isNotBlank() or content.isNotBlank()) {
             MaterialAlertDialogBuilder(requireContext())
@@ -144,8 +139,8 @@ class PostCreateFragment : Fragment() {
     }
 
     private fun handleCreatePost() {
-        val title = binding.postTitle.editText?.text.toString()
-        val content = binding.postContent.editText?.text.toString()
+        val title = binding.postTitle.editText?.text.toString().trim()
+        val content = binding.postContent.editText?.text.toString().trim()
 
         if (title.isBlank()) {
             binding.postTitle.error = resources.getString(R.string.error_title_empty)

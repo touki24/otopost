@@ -23,4 +23,6 @@
     <string name="label_create_post_again">Buat post lagi</string>
     <string name="label_posts">Posts</string>
     <string name="warning_post_update_not_submited">Perubahan yang anda lakukan belum tersimpan, apakah anda yakin ingin kembali?\nPerubahan yang anda lakukan akan hilang jika belum tersimpan</string>
+    <string name="info_update_post_success">Berhasil mengubah post!</string>
+    <string name="error_update_post_the_same">Tidak ada perubahan pada judul maupun konten.</string>
 </resources>
