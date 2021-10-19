@@ -61,7 +61,12 @@ internal class FuelClient: HttpClient {
                     },
                     failure = { error ->
                         Log.e("TAG", "dispatch failure: ${error.localizedMessage.orEmpty()}")
-                        CommonResult.Failure(HttpError(error.localizedMessage.orEmpty()))
+                        val message = if (error.localizedMessage.orEmpty().contains("Unable to resolve host")) {
+                            "Can't connect to server, please check your internet connection"
+                        } else {
+                            error.localizedMessage.orEmpty()
+                        }
+                        CommonResult.Failure(HttpError(message))
                     }
                 )
         } catch (e: Exception){
