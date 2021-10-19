@@ -17,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
 import com.touki.otopost.databinding.FragmentPostDetailBinding
+import com.touki.otopost.databinding.LayoutNoPostBinding
 import com.touki.otopost.util.extension.navigateSafe
 import com.touki.otopost.util.extension.setSupportActionBar
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -24,6 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class PostDetailFragment : Fragment() {
 
     private val binding: FragmentPostDetailBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private lateinit var noPostBinding: LayoutNoPostBinding
     private val viewModel: PostDetailViewModel by sharedViewModel()
     private val args: PostDetailFragmentArgs by navArgs()
     private var actionToPostUpdate: NavDirections? = null
@@ -32,6 +34,7 @@ class PostDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        noPostBinding = LayoutNoPostBinding.bind(binding.root)
         return binding.root
     }
 
@@ -52,6 +55,7 @@ class PostDetailFragment : Fragment() {
             goToPostUpdate()
         }
 
+        setupPostEmptyLayout()
         setPostObserver()
         setDeletedPostObserver()
         setErrorObserver()
@@ -85,6 +89,7 @@ class PostDetailFragment : Fragment() {
                 postTitle = post.title,
                 postContent = post.content
             )
+            showPostEmptyLayout(false)
         })
     }
 
@@ -100,6 +105,7 @@ class PostDetailFragment : Fragment() {
             binding.progressCircular.visibility = View.GONE
             Log.d("", "setupErrorObserver: $message")
             showMessage(message)
+            showPostEmptyLayout(true)
         })
     }
 
@@ -134,5 +140,15 @@ class PostDetailFragment : Fragment() {
     private fun populatePost(title: String, content: String) {
         binding.title.text = title
         binding.content.text = content
+    }
+
+    private fun setupPostEmptyLayout() {
+        noPostBinding.layoutNoPost.visibility = View.GONE
+        noPostBinding.noPostTitle.text = resources.getString(R.string.label_no_post)
+        noPostBinding.noPostMessage.text = resources.getString(R.string.info_please_go_back_and_try_again)
+    }
+
+    private fun showPostEmptyLayout(isShow: Boolean) {
+        noPostBinding.layoutNoPost.visibility = if (isShow) { View.VISIBLE } else { View.GONE }
     }
 }

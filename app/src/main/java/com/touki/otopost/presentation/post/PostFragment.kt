@@ -18,6 +18,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.touki.otopost.R
 import com.touki.otopost.common.extension.showMessage
 import com.touki.otopost.databinding.FragmentPostBinding
+import com.touki.otopost.databinding.LayoutNoPostBinding
 import com.touki.otopost.presentation.post.adapter.PostRecyclerAdapter
 import com.touki.otopost.util.BounceEdgeEffectFactory
 import com.touki.otopost.util.extension.navigateSafe
@@ -30,6 +31,7 @@ class PostFragment : Fragment() {
     }
     private lateinit var prefs: SharedPreferences
     private val binding: FragmentPostBinding by viewBinding(createMethod = CreateMethod.INFLATE)
+    private lateinit var noPostBinding: LayoutNoPostBinding
     private val viewModel: PostViewModel by sharedViewModel()
     private val adapter by lazy {
         PostRecyclerAdapter()
@@ -53,6 +55,7 @@ class PostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        noPostBinding = LayoutNoPostBinding.bind(binding.root)
         return binding.root
     }
 
@@ -77,8 +80,10 @@ class PostFragment : Fragment() {
             toggleDarkMode(isChecked)
         }
 
+        setupPostEmptyLayout()
         setupPostsRecycler()
         setPostsObserver()
+        setCachePostsObserver()
         setErrorObserver()
 
         binding.progressCircular.visibility = View.GONE
@@ -122,8 +127,20 @@ class PostFragment : Fragment() {
 
     private fun setPostsObserver() {
         viewModel.posts.observe(viewLifecycleOwner, { posts ->
+            Log.d(TAG, "setPostsObserver: fetched from api")
             binding.progressCircular.visibility = View.GONE
+            if (adapter.setPosts(posts = posts)) {
+                binding.recyclerPost.smoothScrollToPosition(0)
+            }
+            showPostEmptyLayout(adapter.itemCount < 1)
+        })
+    }
+
+    private fun setCachePostsObserver() {
+        viewModel.cachePosts.observe(viewLifecycleOwner, { posts ->
+            Log.d(TAG, "setCachePostsObserver: loaded from cache")
             adapter.setPosts(posts = posts)
+            showPostEmptyLayout(adapter.itemCount < 1)
         })
     }
 
@@ -133,5 +150,15 @@ class PostFragment : Fragment() {
             Log.d(TAG, "setupErrorObserver: $message")
             showMessage(message)
         })
+    }
+
+    private fun setupPostEmptyLayout() {
+        noPostBinding.layoutNoPost.visibility = View.GONE
+        noPostBinding.noPostTitle.text = resources.getString(R.string.label_no_post)
+        noPostBinding.noPostMessage.text = resources.getString(R.string.info_swipe_to_refresh)
+    }
+
+    private fun showPostEmptyLayout(isShow: Boolean) {
+        noPostBinding.layoutNoPost.visibility = if (isShow) { View.VISIBLE } else { View.GONE }
     }
 }

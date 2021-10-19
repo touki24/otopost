@@ -14,4 +14,6 @@ interface PostRepository {
     suspend fun createPost(title: String, content: String): CommonResult<Post>
 
     suspend fun updatePost(id: Int, title: String, content: String): CommonResult<Post>
+
+    suspend fun loadPosts(): CommonResult<List<Post>>
 }

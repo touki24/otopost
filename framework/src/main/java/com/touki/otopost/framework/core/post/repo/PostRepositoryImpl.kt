@@ -11,7 +11,8 @@ internal class PostRepositoryImpl(
     private val apiFetchPost: ApiFetchPost,
     private val apiDeletePost: ApiDeletePost,
     private val apiCreatePost: ApiCreatePost,
-    private val apiUpdatePost: ApiUpdatePost
+    private val apiUpdatePost: ApiUpdatePost,
+    private val databaseLoadPosts: DatabaseLoadPosts
 ): PostRepository {
     override suspend fun fetchPosts(): ResultWithCache<List<Post>> {
         val posts = apiFetchPosts().fold(
@@ -75,5 +76,18 @@ internal class PostRepositoryImpl(
         )
 
         return CommonResult.Success(post)
+    }
+
+    override suspend fun loadPosts(): CommonResult<List<Post>> {
+        val posts = databaseLoadPosts().fold(
+            success = { posts ->
+                posts
+            },
+            failure = { error ->
+                return CommonResult.Failure(error)
+            }
+        )
+
+        return CommonResult.Success(posts)
     }
 }

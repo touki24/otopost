@@ -16,6 +16,12 @@ import com.touki.otopost.framework.http.HttpClient
 import org.koin.dsl.module
 
 val frameworkCorePostModules = module {
+    factory<DatabaseLoadPosts> {
+        DatabaseLoadPostsImpl(
+            postDao = get<PostDao>()
+        )
+    }
+
     factory<ApiUpdatePost> {
         ApiUpdatePostImpl(
             httpClient = get<HttpClient>()
@@ -53,7 +59,8 @@ val frameworkCorePostModules = module {
             apiFetchPost = get<ApiFetchPost>(),
             apiDeletePost = get<ApiDeletePost>(),
             apiCreatePost = get<ApiCreatePost>(),
-            apiUpdatePost = get<ApiUpdatePost>()
+            apiUpdatePost = get<ApiUpdatePost>(),
+            databaseLoadPosts = get<DatabaseLoadPosts>()
         )
     }
 }
