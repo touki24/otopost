@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/postFragment">
+
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.touki.otopost.presentation.post.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <action
+            android:id="@+id/action_postFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_postCreateFragment"
+            app:destination="@id/postCreateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDetailFragment"
+        android:name="com.touki.otopost.presentation.post.detail.PostDetailFragment"
+        android:label="fragment_post_detail"
+        tools:layout="@layout/fragment_post_detail" >
+        <action
+            android:id="@+id/action_postDetailFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <argument
+            android:name="postId"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_postDetailFragment_to_postUpdateFragment"
+            app:destination="@id/postUpdateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postCreateFragment"
+        android:name="com.touki.otopost.presentation.post.create.PostCreateFragment"
+        android:label="fragment_post_create"
+        tools:layout="@layout/fragment_post_create" >
+        <action
+            android:id="@+id/action_postCreateFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postUpdateFragment"
+        android:name="com.touki.otopost.presentation.post.update.PostUpdateFragment"
+        android:label="fragment_post_update"
+        tools:layout="@layout/fragment_post_update" >
+        <action
+            android:id="@+id/action_postUpdateFragment_to_postDetailFragment"
+            app:destination="@id/postDetailFragment" />
+        <argument
+            android:name="postId"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="postTitle"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="postContent"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+</navigation>
