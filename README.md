@@ -12,8 +12,8 @@ In `build.gradle` (Module: app):
 - Increase the **versionCode**
 - Change the **versionName**
 
-example:
-- Before
+example:<br>
+Before
 ```
 defaultConfig {  
   ...
@@ -37,9 +37,10 @@ The keystore is only need to create once and we will use it as long as its not e
 
 Follow this [guide](https://developer.android.com/studio/publish/app-signing#generate-key) to create keystore.
 ## Build APK/AAB for Production
-For production you can use Android Studio IDE by going to **Build > Generate Signed Bundle/APK...** (then follow the instructions)
-
+For production you can use Android Studio IDE by going to **Build > Generate Signed Bundle/APK...** (then follow the instructions).
+<br>
 But here is for someone who love terminal:
+<br>
 For using terminal you need to define sign in config in your `local.properties`, like this:
 ```
 app.release.store.file=path/to/keystore/file  
@@ -66,7 +67,8 @@ This project apply [Clean Architecture](https://blog.cleancoder.com/uncle-bob/20
 ## Flavors and Build Type
 There are three flavors in this project, those are **development**, **staging**, and **production**. Each flavor has **debug** and **release** build type. Use **debug** type to debug the apps, **release** type will disable the apps from writing logs, apply proguard, and shrink resource.
 ## Build APK for Testing
-Actually you can also do this using Android Studio IDE by going to **Build** -> **Generate Signed Bundle/APK...** (then follow the instructions and don't forget you need keystore for this)
+Actually you can also do this using Android Studio IDE by going to **Build** -> **Generate Signed Bundle/APK...** (then follow the instructions and don't forget you need keystore for this).
+<br>
 But here is also for terminal lover:
 
 - Flavor Development
@@ -105,8 +107,8 @@ But here is also for terminal lover:
 |    |   |    +-- model
 |    |   |    +-- repo
 |    |   |    +-- source
-|   |    +-- <your_another_module_name>
-|    |     |    +-- mapper
+|    |   +-- <your_another_module_name>
+|    |   |    +-- mapper
 |    |   |    +-- model
 |    |   |    +-- repo
 |    |   |    +-- source
@@ -119,27 +121,27 @@ There are four main modules those are `app`, `common`, `core`, and `framework`
 - `app`: Contains app UI, the app face it self, and also where user interact with the app, *can't be implement to another module*.
 - `app.presentation`: Contains activity, fragment, adapter, and viewmodel.
 - `app.util`: Contains util that help the UI, only define this util if it cannot be used for another main modules, or its for UI specific.
-.
- - `common` : Like its name, common module means this module *can be implement by all modules*.
- - `common.constant`: contains constant such as date format, codes, etc.
- - `common.extension`: contains your kotlin extension.
- - `common.mapper`: contains mapper interface such as map response to model, model to entiry, etc.
- - `common.result`: contains function's return value wrapper and error model.
-.
+<br/>.
+- `common` : Like its name, common module means this module *can be implement by all modules*.
+- `common.constant`: contains constant such as date format, codes, etc.
+- `common.extension`: contains your kotlin extension.
+- `common.mapper`: contains mapper interface such as map response to model, model to entiry, etc.
+- `common.result`: contains function's return value wrapper and error model.
+<br/>.
 - `core`: this is the shape of the app, contains app business process, and it is just interface.
 - `core.<your_module_name>`: define your module name, example: `core.post`.
 - `core.<your_module_name>.model`: contains the data layer of clean arch
 - `core.<your_module_name>.repo`: contains the repository interface
 - `core.<your_module_name>.source`: contains interfaces of the datasource, such as api, database, or preferences.
-.
-- `ramework`: this module contains the implementation of `core` module and another library integration such as database, http client, etc.
+<br/>.
+- `framework`: this module contains the implementation of `core` module and another library integration such as database, http client, etc.
 - `framework.core`: contains implementation of `core` module
 - `framework.core.<your_module_name>.mapper`: contains implementation of mapper used by this module, implement mapper interface from `common` module.
 - `framework.core.<your_module_name>.model`: contains response model, request model, and entity model of `your_module`.
 - `framework.core.<your_module_name>.repo`: contains the repository implementation of `core` module.
 - `framework.core.<your_module_name>.source`: contains the datasource implementation of `core` module.
 - `framework.http`: contains http client interface and its implementation
-- `framework.database` contains database instance.
+- `framework.database` contains database instance
  
 ## Environment variables
 All environment variable, base url, sensitive data, keystore credential, or something that has limited access need to define in `local.properties`. Environment variable used in this project as below:
